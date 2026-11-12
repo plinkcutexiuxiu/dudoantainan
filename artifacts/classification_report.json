@@ -1,0 +1,39 @@
+{
+  "Level 1 (lowest traffic impact)": {
+    "precision": 0.08181818181818182,
+    "recall": 0.2621359223300971,
+    "f1-score": 0.12471131639722864,
+    "support": 103.0
+  },
+  "Level 2": {
+    "precision": 0.8858875413450937,
+    "recall": 0.6727367870225013,
+    "f1-score": 0.764737374338231,
+    "support": 9555.0
+  },
+  "Level 3": {
+    "precision": 0.3238380809595202,
+    "recall": 0.6390532544378699,
+    "f1-score": 0.4298507462686567,
+    "support": 2028.0
+  },
+  "Level 4 (highest traffic impact)": {
+    "precision": 0.10922330097087378,
+    "recall": 0.14331210191082802,
+    "f1-score": 0.12396694214876033,
+    "support": 314.0
+  },
+  "accuracy": 0.6496666666666666,
+  "macro avg": {
+    "precision": 0.3501917762734174,
+    "recall": 0.4293095164253241,
+    "f1-score": 0.3608165947882192,
+    "support": 12000.0
+  },
+  "weighted avg": {
+    "precision": 0.7636768729142004,
+    "recall": 0.6496666666666666,
+    "f1-score": 0.6858811508881881,
+    "support": 12000.0
+  }
+}

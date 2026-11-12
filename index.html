@@ -1,0 +1,1133 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Đăng nhập hệ thống phân tích và dự báo mức độ nghiêm trọng tai nạn giao thông."
+    />
+    <title>Đăng nhập | SafeRoute Analytics</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --ink: #3a2633;
+        --berry: #9f3f66;
+        --rose: #bd557c;
+        --rose-light: #ffd1df;
+        --blush: #fff5f8;
+        --line: #ead9e1;
+        font-family:
+          Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+          "Segoe UI", sans-serif;
+        color: var(--ink);
+        background: var(--blush);
+        font-synthesis: none;
+        text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        font-optical-sizing: auto;
+        font-weight: 400;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        min-width: 320px;
+        min-height: 100vh;
+        margin: 0;
+      }
+
+      @keyframes rose-wash {
+        from { background-position: 0% 40%; }
+        to { background-position: 100% 60%; }
+      }
+
+      @keyframes ring-drift {
+        from { transform: rotate(0deg) translate3d(0, 0, 0); }
+        to { transform: rotate(14deg) translate3d(-12px, -8px, 0); }
+      }
+
+      @keyframes ring-drift-reverse {
+        from { transform: rotate(12deg) translate3d(0, 0, 0); }
+        to { transform: rotate(-8deg) translate3d(14px, 9px, 0); }
+      }
+
+      @keyframes rise-in {
+        from { opacity: 0; transform: translateY(14px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+
+      @keyframes status-glow {
+        0%, 100% { box-shadow: 0 0 0 4px rgb(245 169 194 / 14%); }
+        50% { box-shadow: 0 0 0 7px rgb(245 169 194 / 7%); }
+      }
+
+      button,
+      input {
+        font: inherit;
+      }
+
+      .page {
+        display: grid;
+        min-height: 100vh;
+        grid-template-columns: minmax(0, 1.05fr) minmax(420px, 0.95fr);
+      }
+
+      .story {
+        position: relative;
+        display: flex;
+        min-height: 100vh;
+        flex-direction: column;
+        justify-content: space-between;
+        overflow: hidden;
+        padding: 38px clamp(32px, 6vw, 88px) 30px;
+        color: var(--ink);
+        background:
+          radial-gradient(ellipse at 14% 82%, rgb(255 255 255 / 55%), transparent 35%),
+          radial-gradient(ellipse at 88% 12%, rgb(238 187 204 / 24%), transparent 38%),
+          linear-gradient(145deg, #fff1f4 3%, #f8e3e9 54%, #fcebf0);
+        background-size: 145% 145%;
+        animation: rose-wash 18s ease-in-out infinite alternate;
+      }
+
+      .story::before,
+      .story::after {
+        position: absolute;
+        z-index: 0;
+        width: 380px;
+        height: 380px;
+        border: 1px solid rgb(166 77 111 / 10%);
+        border-radius: 50%;
+        content: "";
+        pointer-events: none;
+      }
+
+      .story::before {
+        right: -180px;
+        bottom: -180px;
+        box-shadow:
+          0 0 0 42px rgb(166 77 111 / 4%),
+          0 0 0 84px rgb(166 77 111 / 3%);
+        animation: ring-drift 32s linear infinite;
+      }
+
+      .story::after {
+        top: 36%;
+        left: -300px;
+        width: 460px;
+        height: 460px;
+        animation: ring-drift-reverse 38s linear infinite;
+      }
+
+      .brand,
+      .story-copy,
+      .story-footer {
+        position: relative;
+        z-index: 1;
+      }
+
+      .brand {
+        display: inline-flex;
+        width: fit-content;
+        align-items: center;
+        gap: 12px;
+        color: var(--ink);
+        text-decoration: none;
+      }
+
+      .story > .brand {
+        animation: rise-in 650ms 80ms both;
+      }
+
+      .brand-mark {
+        display: grid;
+        width: 42px;
+        height: 42px;
+        place-items: center;
+        border: 1px solid rgb(166 77 111 / 15%);
+        border-radius: 13px;
+        background: rgb(255 255 255 / 62%);
+        color: var(--berry);
+      }
+
+      .brand-mark svg {
+        width: 23px;
+        height: 23px;
+      }
+
+      .brand-name {
+        font-size: 15px;
+        font-weight: 750;
+        letter-spacing: 0.035em;
+      }
+
+      .brand-name span {
+        display: block;
+        margin-top: 3px;
+        color: #876676;
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 0.16em;
+      }
+
+      .story-copy {
+        width: min(100%, 560px);
+        margin: auto 0;
+        padding: 76px 0;
+        animation: rise-in 700ms 180ms both;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 9px;
+        margin: 0 0 22px;
+        color: var(--berry);
+        font-size: 11px;
+        font-weight: 750;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+      }
+
+      .eyebrow::before {
+        width: 22px;
+        height: 2px;
+        background: currentColor;
+        content: "";
+      }
+
+      h1 {
+        max-width: 550px;
+        margin: 0;
+        font-size: clamp(38px, 5vw, 64px);
+        font-weight: 680;
+        letter-spacing: -0.055em;
+        line-height: 1.08;
+      }
+
+      h1 span {
+        color: #b34d73;
+      }
+
+      .story-description {
+        max-width: 440px;
+        margin: 23px 0 0;
+        color: #725b69;
+        font-size: 15px;
+        line-height: 1.8;
+      }
+
+      .insight-card {
+        display: flex;
+        max-width: 440px;
+        align-items: center;
+        gap: 15px;
+        margin-top: 38px;
+        padding: 16px 18px;
+        border: 1px solid #e8cdd7;
+        border-radius: 15px;
+        background: rgb(255 255 255 / 58%);
+        backdrop-filter: blur(12px);
+        transition: transform 220ms ease, border-color 220ms ease, background 220ms ease;
+        animation: rise-in 700ms 360ms both;
+      }
+
+      .insight-card:hover {
+        transform: translateY(-3px);
+        border-color: #d9a8ba;
+        background: rgb(255 255 255 / 82%);
+      }
+
+      .insight-icon {
+        display: grid;
+        width: 40px;
+        height: 40px;
+        flex: 0 0 auto;
+        place-items: center;
+        border-radius: 12px;
+        background: #f8e2e9;
+        color: var(--berry);
+      }
+
+      .insight-icon svg {
+        width: 20px;
+        height: 20px;
+      }
+
+      .insight-card strong,
+      .insight-card span {
+        display: block;
+      }
+
+      .insight-card strong {
+        font-size: 13px;
+        font-weight: 650;
+      }
+
+      .insight-card span {
+        margin-top: 4px;
+        color: #806b77;
+        font-size: 11px;
+      }
+
+      .story-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        color: #806b77;
+        font-size: 11px;
+      }
+
+      .system-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .status-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: #b64c73;
+        box-shadow: 0 0 0 4px rgb(182 76 115 / 13%);
+        animation: status-glow 2.8s ease-in-out infinite;
+      }
+
+      .login-side {
+        display: grid;
+        min-height: 100vh;
+        place-items: center;
+        padding: 36px;
+        background:
+          radial-gradient(ellipse at 92% 6%, rgb(238 187 204 / 30%), transparent 42%),
+          linear-gradient(145deg, #fff6f8, #fbe9ef 55%, #fff5f7);
+      }
+
+      .login-card {
+        width: min(100%, 420px);
+        padding: 14px 0;
+        animation: rise-in 720ms 120ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+      }
+
+      .mobile-brand {
+        display: none;
+      }
+
+      .login-heading {
+        margin-bottom: 32px;
+        animation: rise-in 600ms 140ms both;
+      }
+
+      .login-heading .eyebrow {
+        margin-bottom: 13px;
+        color: var(--berry);
+        font-size: 10px;
+      }
+
+      h2 {
+        margin: 0;
+        color: var(--ink);
+        font-size: 32px;
+        font-weight: 720;
+        letter-spacing: -0.045em;
+      }
+
+      .login-heading p {
+        margin: 10px 0 0;
+        color: #786673;
+        font-size: 14px;
+        line-height: 1.65;
+      }
+
+      .field {
+        margin-bottom: 20px;
+      }
+
+      .field label {
+        display: block;
+        margin-bottom: 9px;
+        color: #4a3340;
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .input-wrap {
+        position: relative;
+      }
+
+      .input-icon {
+        position: absolute;
+        top: 50%;
+        left: 15px;
+        width: 18px;
+        height: 18px;
+        color: #ad8998;
+        pointer-events: none;
+        transform: translateY(-50%);
+      }
+
+      .field input {
+        width: 100%;
+        height: 51px;
+        padding: 0 46px;
+        border: 1px solid var(--line);
+        border-radius: 11px;
+        outline: none;
+        background: #fff;
+        color: var(--ink);
+        font-size: 13px;
+        transition:
+          border-color 160ms ease,
+          box-shadow 160ms ease;
+      }
+
+      .field input.plain-input {
+        padding-right: 14px;
+        padding-left: 14px;
+      }
+
+      .field input::placeholder {
+        color: #b39da7;
+      }
+
+      .field input:focus {
+        border-color: var(--rose);
+        box-shadow: 0 0 0 4px rgb(189 85 124 / 13%);
+      }
+
+      .password-toggle {
+        position: absolute;
+        top: 50%;
+        right: 12px;
+        display: grid;
+        width: 30px;
+        height: 30px;
+        place-items: center;
+        border: 0;
+        border-radius: 7px;
+        background: transparent;
+        color: #9d7f8e;
+        cursor: pointer;
+        transform: translateY(-50%);
+      }
+
+      .password-toggle:hover {
+        background: #fceaf0;
+        color: var(--berry);
+      }
+
+      .password-toggle svg {
+        width: 17px;
+        height: 17px;
+      }
+
+      .form-options {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin: 2px 0 25px;
+        font-size: 12px;
+      }
+
+      .remember {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: #705b67;
+        cursor: pointer;
+      }
+
+      .remember input {
+        width: 15px;
+        height: 15px;
+        margin: 0;
+        accent-color: var(--berry);
+      }
+
+      .text-link {
+        color: var(--berry);
+        font-weight: 700;
+        text-decoration: none;
+      }
+
+      .text-link:hover {
+        color: #78304e;
+        text-decoration: underline;
+      }
+
+      .submit-button {
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        width: 100%;
+        height: 51px;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        border: 0;
+        border-radius: 11px;
+        background: linear-gradient(105deg, #a23f66, #c05a7c 58%, #a8466a);
+        background-size: 180% 100%;
+        box-shadow: 0 8px 18px rgb(159 63 102 / 20%);
+        color: #fff;
+        cursor: pointer;
+        font-size: 13px;
+        font-weight: 720;
+        transition:
+          background 160ms ease,
+          transform 160ms ease,
+          box-shadow 160ms ease,
+          background-position 500ms ease;
+      }
+
+      .submit-button:hover {
+        background-position: 100% 50%;
+        box-shadow: 0 10px 22px rgb(159 63 102 / 28%);
+        transform: translateY(-1px);
+      }
+
+      .submit-button:focus-visible,
+      .password-toggle:focus-visible,
+      .text-link:focus-visible {
+        outline: 3px solid rgb(189 85 124 / 35%);
+        outline-offset: 3px;
+      }
+
+      .submit-button svg {
+        width: 17px;
+        height: 17px;
+      }
+
+      .form-message {
+        min-height: 20px;
+        margin: 12px 0 0;
+        color: #a34728;
+        font-size: 12px;
+        line-height: 1.6;
+      }
+
+      .form-message.success {
+        color: #147c58;
+      }
+
+      #login-form .field,
+      #register-form .field {
+        animation: rise-in 520ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+      }
+
+      #login-form .field:nth-child(1),
+      #register-form .field:nth-child(1) { animation-delay: 180ms; }
+      #login-form .field:nth-child(2),
+      #register-form .field:nth-child(2) { animation-delay: 240ms; }
+      #register-form .field:nth-child(3) { animation-delay: 300ms; }
+      #register-form .field:nth-child(4) { animation-delay: 360ms; }
+
+      .form-options,
+      .submit-button,
+      .account-prompt {
+        animation: rise-in 520ms 320ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+      }
+
+      .account-prompt {
+        margin: 16px 0 0;
+        color: #786673;
+        font-size: 12px;
+        text-align: center;
+      }
+
+      .security-note {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        margin-top: 28px;
+        padding: 14px 15px;
+        border: 1px solid #f0dfe6;
+        border-radius: 11px;
+        background: rgb(255 255 255 / 78%);
+        color: #786673;
+        font-size: 11px;
+        line-height: 1.6;
+        animation: rise-in 580ms 420ms both;
+      }
+
+      .security-note svg {
+        width: 17px;
+        height: 17px;
+        flex: 0 0 auto;
+        color: var(--berry);
+      }
+
+      .mobile-footer {
+        display: none;
+      }
+
+      @media (max-width: 900px) {
+        .page {
+          grid-template-columns: minmax(0, 0.9fr) minmax(390px, 1.1fr);
+        }
+
+        .story {
+          padding-right: 38px;
+          padding-left: 38px;
+        }
+
+        .story-description {
+          font-size: 14px;
+        }
+      }
+
+      @media (max-width: 700px) {
+        .page {
+          display: block;
+        }
+
+        .story {
+          display: none;
+        }
+
+        .login-side {
+          min-height: 100vh;
+          padding: 32px 24px;
+        }
+
+        .login-card {
+          max-width: 420px;
+        }
+
+        .mobile-brand {
+          display: inline-flex;
+          margin-bottom: 54px;
+          color: var(--ink);
+        }
+
+        .mobile-brand .brand-mark {
+          border-color: #efd5df;
+          background: #fceaf0;
+          color: var(--berry);
+        }
+
+        .mobile-brand .brand-name span {
+          color: #77869b;
+        }
+
+        .mobile-footer {
+          display: block;
+          margin-top: 32px;
+          color: #8793a6;
+          font-size: 10px;
+          text-align: center;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          scroll-behavior: auto !important;
+          transition-duration: 0.01ms !important;
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <section class="story" aria-label="Giới thiệu hệ thống">
+        <a class="brand" href="#" aria-label="SafeRoute Analytics">
+          <span class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path
+                d="M12 3.2 19 6v5.3c0 4.5-2.9 7.7-7 9.5-4.1-1.8-7-5-7-9.5V6l7-2.8Z"
+                stroke="currentColor"
+                stroke-width="1.7"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M8.2 13.8h2.1l1.2-4 1.5 6 1.1-3h1.7"
+                stroke="currentColor"
+                stroke-width="1.7"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </span>
+          <span class="brand-name">
+            SAFEROUTE
+            <span>ANALYTICS PLATFORM</span>
+          </span>
+        </a>
+
+        <div class="story-copy">
+          <p class="eyebrow">Phân tích giao thông thông minh</p>
+          <h1>Hiểu rủi ro.<br /><span>Chủ động an toàn.</span></h1>
+          <p class="story-description">
+            Khai thác dữ liệu và mô hình học máy để hỗ trợ nhận diện những yếu
+            tố liên quan đến mức độ nghiêm trọng của tai nạn giao thông.
+          </p>
+          <div class="insight-card">
+            <span class="insight-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none">
+                <path
+                  d="M4 18.5V14m5 4.5V9m5 9.5V5m5 13.5v-7"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
+                <path
+                  d="M3 20.5h18"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                  stroke-linecap="round"
+                />
+              </svg>
+            </span>
+            <span>
+              <strong>Ra quyết định dựa trên dữ liệu</strong>
+              <span>Thông tin rõ ràng, hỗ trợ phân tích có trách nhiệm</span>
+            </span>
+          </div>
+        </div>
+
+        <footer class="story-footer">
+          <span>© 2026 SafeRoute Analytics</span>
+          <span class="system-status">
+            <span class="status-dot" aria-hidden="true"></span>
+            Cổng truy cập an toàn
+          </span>
+        </footer>
+      </section>
+
+      <section class="login-side" aria-label="Đăng nhập">
+        <div class="login-card">
+          <a class="brand mobile-brand" href="#" aria-label="SafeRoute Analytics">
+            <span class="brand-mark" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none">
+                <path
+                  d="M12 3.2 19 6v5.3c0 4.5-2.9 7.7-7 9.5-4.1-1.8-7-5-7-9.5V6l7-2.8Z"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M8.2 13.8h2.1l1.2-4 1.5 6 1.1-3h1.7"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </span>
+            <span class="brand-name">
+              SAFEROUTE
+              <span>ANALYTICS PLATFORM</span>
+            </span>
+          </a>
+
+          <header class="login-heading" id="login-heading">
+            <p class="eyebrow">Chào mừng trở lại</p>
+            <h2>Đăng nhập</h2>
+            <p>Đăng nhập để tiếp tục vào hệ thống dự báo tai nạn.</p>
+          </header>
+
+          <form id="login-form">
+            <div class="field">
+              <label for="username">Email</label>
+              <div class="input-wrap">
+                <svg class="input-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <circle cx="12" cy="8" r="3.5" stroke="currentColor" stroke-width="1.7" />
+                  <path
+                    d="M5 20c.5-3.1 3.2-5 7-5s6.5 1.9 7 5"
+                    stroke="currentColor"
+                    stroke-width="1.7"
+                    stroke-linecap="round"
+                  />
+                </svg>
+                <input
+                  id="username"
+                  name="username"
+                  type="email"
+                  placeholder="ten@example.com"
+                  autocomplete="email"
+                  required
+                />
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="password">Mật khẩu</label>
+              <div class="input-wrap">
+                <svg class="input-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <rect
+                    x="5"
+                    y="10"
+                    width="14"
+                    height="10"
+                    rx="2"
+                    stroke="currentColor"
+                    stroke-width="1.7"
+                  />
+                  <path
+                    d="M8 10V7a4 4 0 0 1 8 0v3m-4 4v2"
+                    stroke="currentColor"
+                    stroke-width="1.7"
+                    stroke-linecap="round"
+                  />
+                </svg>
+                <input
+                  id="password"
+                  name="password"
+                  type="password"
+                  placeholder="Nhập mật khẩu"
+                  autocomplete="current-password"
+                  required
+                />
+                <button
+                  class="password-toggle"
+                  id="password-toggle"
+                  type="button"
+                  aria-label="Hiện mật khẩu"
+                  aria-pressed="false"
+                >
+                  <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path
+                      d="M2.8 12s3.2-5.3 9.2-5.3 9.2 5.3 9.2 5.3-3.2 5.3-9.2 5.3S2.8 12 2.8 12Z"
+                      stroke="currentColor"
+                      stroke-width="1.7"
+                      stroke-linejoin="round"
+                    />
+                    <circle cx="12" cy="12" r="2.4" stroke="currentColor" stroke-width="1.7" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            <div class="form-options">
+              <label class="remember">
+                <input type="checkbox" name="remember" />
+                Ghi nhớ đăng nhập
+              </label>
+              <a class="text-link" id="forgot-password" href="#forgot-password">
+                Quên mật khẩu?
+              </a>
+            </div>
+
+            <button class="submit-button" type="submit">
+              Đăng nhập
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path
+                  d="M5 12h14m-6-6 6 6-6 6"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </button>
+            <p class="form-message" id="form-message" role="status" aria-live="polite"></p>
+            <p class="account-prompt">
+              Chưa có tài khoản?
+              <a class="text-link" id="show-register" href="#dang-ky">Tạo tài khoản</a>
+            </p>
+          </form>
+
+          <header class="login-heading" id="register-heading" hidden>
+            <p class="eyebrow">Tạo tài khoản mới</p>
+            <h2>Đăng ký</h2>
+            <p>Tạo tài khoản demo để đăng nhập trên trình duyệt này.</p>
+          </header>
+
+          <form id="register-form" hidden>
+            <div class="field">
+              <label for="register-name">Họ và tên</label>
+              <div class="input-wrap">
+                <input
+                  id="register-name"
+                  name="name"
+                  class="plain-input"
+                  type="text"
+                  placeholder="Nhập họ và tên"
+                  autocomplete="name"
+                  minlength="2"
+                  maxlength="80"
+                  required
+                />
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="register-email">Email</label>
+              <div class="input-wrap">
+                <input
+                  id="register-email"
+                  name="email"
+                  class="plain-input"
+                  type="email"
+                  placeholder="ten@example.com"
+                  autocomplete="email"
+                  maxlength="254"
+                  required
+                />
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="register-password">Mật khẩu (ít nhất 8 ký tự)</label>
+              <div class="input-wrap">
+                <input
+                  id="register-password"
+                  name="password"
+                  class="plain-input"
+                  type="password"
+                  placeholder="Tạo mật khẩu"
+                  autocomplete="new-password"
+                  minlength="8"
+                  maxlength="128"
+                  required
+                />
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="confirm-password">Nhập lại mật khẩu</label>
+              <div class="input-wrap">
+                <input
+                  id="confirm-password"
+                  name="confirm-password"
+                  class="plain-input"
+                  type="password"
+                  placeholder="Nhập lại mật khẩu"
+                  autocomplete="new-password"
+                  minlength="8"
+                  maxlength="128"
+                  required
+                />
+              </div>
+            </div>
+
+            <button class="submit-button" type="submit">Tạo tài khoản</button>
+            <p class="form-message" id="register-message" role="status" aria-live="polite"></p>
+            <p class="account-prompt">
+              Đã có tài khoản?
+              <a class="text-link" id="show-login" href="#dang-nhap">Quay lại đăng nhập</a>
+            </p>
+          </form>
+
+          <div class="security-note">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path
+                d="M12 3.2 19 6v5.3c0 4.5-2.9 7.7-7 9.5-4.1-1.8-7-5-7-9.5V6l7-2.8Z"
+                stroke="currentColor"
+                stroke-width="1.7"
+                stroke-linejoin="round"
+              />
+              <path
+                d="m9 12 2 2 4-4"
+                stroke="currentColor"
+                stroke-width="1.7"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+            <span>
+              Đây là bản demo: tài khoản được lưu trên trình duyệt hiện tại,
+              chưa có máy chủ xác thực. Không dùng mật khẩu thật.
+            </span>
+          </div>
+          <p class="mobile-footer">© 2026 SafeRoute Analytics</p>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      const passwordInput = document.querySelector("#password");
+      const passwordToggle = document.querySelector("#password-toggle");
+      const loginForm = document.querySelector("#login-form");
+      const formMessage = document.querySelector("#form-message");
+      const forgotPasswordLink = document.querySelector("#forgot-password");
+      const registerForm = document.querySelector("#register-form");
+      const registerMessage = document.querySelector("#register-message");
+      const loginHeading = document.querySelector("#login-heading");
+      const registerHeading = document.querySelector("#register-heading");
+      const storageKey = "saferoute-demo-accounts";
+      const sessionKey = "saferoute-demo-session";
+      const passwordIterations = 210000;
+      const localDemo = ["localhost", "127.0.0.1"].includes(window.location.hostname)
+        || new URLSearchParams(window.location.search).get("demo") === "1";
+
+      if (!localDemo) {
+        loginForm.querySelector("button[type='submit']").disabled = true;
+        document.querySelector("#show-register").hidden = true;
+        showMessage(formMessage, "Đăng nhập online chưa được cấu hình. Tài khoản demo chỉ dùng trên localhost.");
+      }
+
+      function showMessage(element, message, isSuccess = false) {
+        element.textContent = message;
+        element.classList.toggle("success", isSuccess);
+      }
+
+      function readAccounts() {
+        const savedAccounts = localStorage.getItem(storageKey);
+        if (!savedAccounts) return [];
+
+        const accounts = JSON.parse(savedAccounts);
+        if (!Array.isArray(accounts)) {
+          throw new Error("Dữ liệu tài khoản demo không hợp lệ trong trình duyệt.");
+        }
+        return accounts;
+      }
+
+      async function hashPassword(password, salt) {
+        if (!window.crypto?.subtle) {
+          throw new Error(
+            "Trình duyệt không hỗ trợ mã hóa mật khẩu ở chế độ này. Hãy mở trang qua máy chủ cục bộ.",
+          );
+        }
+
+        const keyMaterial = await window.crypto.subtle.importKey(
+          "raw",
+          new TextEncoder().encode(password),
+          "PBKDF2",
+          false,
+          ["deriveBits"],
+        );
+        const derivedBits = await window.crypto.subtle.deriveBits(
+          {
+            name: "PBKDF2",
+            salt,
+            iterations: passwordIterations,
+            hash: "SHA-256",
+          },
+          keyMaterial,
+          256,
+        );
+        return Array.from(new Uint8Array(derivedBits), (byte) =>
+          byte.toString(16).padStart(2, "0"),
+        ).join("");
+      }
+
+      function setFormMode(mode) {
+        const registering = mode === "register";
+        loginForm.hidden = registering;
+        loginHeading.hidden = registering;
+        registerForm.hidden = !registering;
+        registerHeading.hidden = !registering;
+        showMessage(formMessage, "");
+        showMessage(registerMessage, "");
+        (registering ? document.querySelector("#register-name") : passwordInput).focus();
+      }
+
+      document.querySelector("#show-register").addEventListener("click", (event) => {
+        event.preventDefault();
+        setFormMode("register");
+      });
+
+      document.querySelector("#show-login").addEventListener("click", (event) => {
+        event.preventDefault();
+        setFormMode("login");
+      });
+
+      passwordToggle.addEventListener("click", () => {
+        const shouldShow = passwordInput.type === "password";
+        passwordInput.type = shouldShow ? "text" : "password";
+        passwordToggle.setAttribute("aria-pressed", String(shouldShow));
+        passwordToggle.setAttribute(
+          "aria-label",
+          shouldShow ? "Ẩn mật khẩu" : "Hiện mật khẩu",
+        );
+      });
+
+      loginForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        if (!localDemo) return;
+        showMessage(formMessage, "");
+        try {
+          const email = document.querySelector("#username").value.trim().toLowerCase();
+          const account = readAccounts().find((item) => item.email === email);
+          if (!account) {
+            showMessage(formMessage, "Không tìm thấy tài khoản. Hãy đăng ký trước.");
+            return;
+          }
+
+          const passwordHash = await hashPassword(passwordInput.value, Uint8Array.from(
+            atob(account.salt),
+            (character) => character.charCodeAt(0),
+          ));
+          if (passwordHash !== account.passwordHash) {
+            showMessage(formMessage, "Email hoặc mật khẩu không đúng.");
+            return;
+          }
+
+          showMessage(
+            formMessage,
+            `Đăng nhập demo thành công${account.name ? `, ${account.name}` : ""}. Đang mở dashboard...`,
+            true,
+          );
+          localStorage.setItem(sessionKey, JSON.stringify({ name: account.name, email: account.email }));
+          window.location.assign("dashboard.html?demo=1");
+        } catch (error) {
+          showMessage(
+            formMessage,
+            error instanceof Error ? error.message : "Không thể đăng nhập demo.",
+          );
+        }
+      });
+
+      registerForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        if (!localDemo) return;
+        showMessage(registerMessage, "");
+        const name = document.querySelector("#register-name").value.trim();
+        const email = document.querySelector("#register-email").value.trim().toLowerCase();
+        const password = document.querySelector("#register-password").value;
+        const confirmation = document.querySelector("#confirm-password").value;
+
+        if (password !== confirmation) {
+          showMessage(registerMessage, "Hai mật khẩu nhập vào chưa khớp.");
+          return;
+        }
+
+        try {
+          const accounts = readAccounts();
+          if (accounts.some((account) => account.email === email)) {
+            showMessage(registerMessage, "Email này đã đăng ký trên trình duyệt.");
+            return;
+          }
+
+          const salt = window.crypto.getRandomValues(new Uint8Array(16));
+          const passwordHash = await hashPassword(password, salt);
+          accounts.push({
+            name,
+            email,
+            salt: btoa(String.fromCharCode(...salt)),
+            passwordHash,
+          });
+          localStorage.setItem(storageKey, JSON.stringify(accounts));
+          registerForm.reset();
+          document.querySelector("#username").value = email;
+          passwordInput.value = "";
+          setFormMode("login");
+          showMessage(formMessage, "Tạo tài khoản thành công. Hãy đăng nhập.", true);
+        } catch (error) {
+          showMessage(
+            registerMessage,
+            error instanceof Error
+              ? error.message
+              : "Không thể lưu tài khoản demo trong trình duyệt.",
+          );
+        }
+      });
+
+      forgotPasswordLink.addEventListener("click", (event) => {
+        event.preventDefault();
+        formMessage.textContent =
+          "Chức năng khôi phục mật khẩu sẽ khả dụng sau khi tích hợp tài khoản.";
+      });
+    </script>
+  </body>
+</html>

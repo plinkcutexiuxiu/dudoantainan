@@ -1,0 +1,42 @@
+{
+  "source": "US Accidents (2016–2023), Kaggle author-linked 500,000-row sample",
+  "kaggle_url": "https://www.kaggle.com/datasets/sobhanmoosavi/us-accidents",
+  "license": "CC BY-NC-SA 4.0; academic/non-commercial use only",
+  "rows": 500000,
+  "columns": 20,
+  "missing_values": 225093,
+  "states": 49,
+  "cities": 9488,
+  "date_start": "2016-01-14",
+  "date_end": "2023-03-31",
+  "classes": {
+    "Level 1 (lowest traffic impact)": 4274,
+    "Level 2": 398142,
+    "Level 3": 84520,
+    "Level 4 (highest traffic impact)": 13064
+  },
+  "top_weather": {
+    "Fair": 166053,
+    "Mostly Cloudy": 65398,
+    "Cloudy": 53107,
+    "Clear": 52379,
+    "Partly Cloudy": 45125,
+    "Overcast": 24901,
+    "Light Rain": 22718,
+    "Scattered Clouds": 13030,
+    "Light Snow": 8233,
+    "Fog": 6445
+  },
+  "top_states": {
+    "CA": 113274,
+    "FL": 56710,
+    "TX": 37355,
+    "SC": 24737,
+    "NY": 22594,
+    "NC": 21750,
+    "VA": 19515,
+    "PA": 19351,
+    "MN": 12333,
+    "OR": 11559
+  }
+}
