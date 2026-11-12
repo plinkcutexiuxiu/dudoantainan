@@ -99,14 +99,11 @@ before considering generalization.
 Always describe Level 1–4 as the source dataset's traffic-impact severity, not
 injury severity or a probability that an accident will occur.
 
-## Permanent public link
+## Public demo deployment
 
-The repository includes a Docker image and `render.yaml` blueprint. To create
-a stable URL, push this folder to a GitHub repository, then create a Render
-Blueprint from that repository. The blueprint uses an always-on Starter web
-service and sets `SAFEROUTE_PUBLIC_DEMO=1`, so opening the service root goes
-straight to the dashboard. Render supplies a stable `*.onrender.com` address.
-The always-on plan is paid; a free sleeping service does not meet a strict
-24/7 requirement. The app is currently in a local folder without a Git remote,
-so the GitHub repository and Render account still need to be provided/created
-before it can be deployed. Do not publish `data/` or personal credentials.
+The repository includes a Docker image and `render.yaml` blueprint. Create a
+Render Blueprint from this GitHub repository to get a public `*.onrender.com`
+URL; `SAFEROUTE_PUBLIC_DEMO=1` sends visitors straight to the dashboard. The
+blueprint uses Render's free web-service plan, which may spin down after
+inactivity and take time to start on the next visit. It is not guaranteed to
+stay continuously awake. Do not publish `data/` or personal credentials.
